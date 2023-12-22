@@ -6,6 +6,7 @@ function App() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [errors, setErrors] = useState({});
 
   const handleFirstNameChange = (e) => {
     setFirstName(e.target.value)
@@ -17,8 +18,33 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setSubmitted(true);
-  }
+    
+    if(validateForm()) {
+      setSubmitted(true)
+    }
+  };
+
+  
+
+  const validateForm = () => {
+    let errors = {};
+    let isValid = true;
+
+    if(firstName.trim() === '') {
+      errors.firstName = "Please fill out this field.";
+      isValid = false;
+    }
+
+    if(lastName.trim() === '') {
+      errors.lastName = "Please fill out this field."
+      isValid = false;
+    }
+
+    setErrors(errors);
+    return isValid;
+  };
+
+  
 
   return (
   <div className="App">
@@ -32,6 +58,7 @@ function App() {
         value={firstName}
         onChange={handleFirstNameChange}
         />
+        {errors.firstName && <p>{errors.firstName}</p>}
       </label>
     </div>
     <div className='last'>
@@ -42,6 +69,7 @@ function App() {
         value={lastName}
         onChange={handleLastNameChange}
         />
+        {errors.lastName && <p>{errors.lastName}</p>}
       </label>
     </div>
     <button type='submit'>Submit</button>
